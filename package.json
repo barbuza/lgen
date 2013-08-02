@@ -1,0 +1,28 @@
+{
+  "name": "lgen",
+  "version": "0.1.0",
+  "description": "0config static site generator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/barbuza/lgen.git"
+  },
+  "author": "Victor Kotseruba <barbuzaster@gmail.com>",
+  "main": "./lib/lgen.js",
+  "scripts": {
+    "prepublish": "lsc -o lib src/*.ls",
+    "postpublish": "rm -rf lib"
+  },
+  "dependencies": {
+    "colors": "~0.6.1",
+    "prelude-ls": "~1.0.3",
+    "LiveScript": "~1.1.1",
+    "stylus": "~0.36.0",
+    "jade": "~0.34.1",
+    "glob": "~3.2.6",
+    "wmd": "~0.2.11",
+    "js-beautify": "~1.4.0",
+    "autoprefixer": "~0.6.20130731",
+    "mkdirp": "~0.3.5",
+    "rmdir": "~1.0.0"
+  }
+}

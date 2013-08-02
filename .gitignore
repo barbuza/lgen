@@ -1,0 +1,6 @@
+/lib
+/source
+/build
+Slakefile
+.DS_Store
+/node_modules
