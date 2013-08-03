@@ -1,6 +1,4 @@
-require! {cssmin, "./log"}
+require! {cssmin, "./compile"}
 
-module.exports = ({content}:ctx) ->
-  log "@minify css"
-  ctx.content = cssmin content, 80
-  ctx
+module.exports = compile \cssmin (content) ->
+  cssmin content, 80

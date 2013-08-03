@@ -1,6 +1,4 @@
-require! {"uglify-js", "./log"}
+require! {"uglify-js", "./compile"}
 
-module.exports = ({content}:ctx) ->
-  log "@uglify js"
-  ctx.content = uglify-js.minify content, {+from-string} .code
-  ctx
+module.exports = compile \uglify-js (content) ->
+  uglify-js.minify content, {+from-string} .code

@@ -1,6 +1,4 @@
-require! {livescript, "./log"}
+require! {livescript, "./compile"}
 
-module.exports = ({content}:ctx) ->
-  log "@render livescript"
-  ctx.content = livescript.compile content
-  ctx
+module.exports = compile \livescript (content) ->
+  livescript.compile content
