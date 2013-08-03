@@ -1,9 +1,8 @@
-"use strict"
+require! {autoprefixer, "./log"}
 
-autoprefixer = require \autoprefixer
-log = require "./log"
-
-module.exports = ({content}:ctx) ->
-  log "@render autoprefixer"
-  ctx.content = autoprefixer.compile content
-  ctx
+module.exports = (...reqs) ->
+  reqs = ["last 2 versions"] unless reqs.length
+  ({content}:ctx) ->
+    log \@autoprefixer reqs
+    ctx.content = autoprefixer(...reqs).compile content
+    ctx

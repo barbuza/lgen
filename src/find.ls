@@ -1,8 +1,4 @@
-"use strict"
-
-glob = require \glob
-path = require \path
-log = require "./log"
+require! {glob, path, "./log"}
 
 module.exports = (pattern, fun) -->
   log \@find pattern

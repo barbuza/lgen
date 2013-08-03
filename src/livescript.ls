@@ -1,7 +1,4 @@
-"use strict"
-
-livescript = require \livescript
-log = require "./log"
+require! {livescript, "./log"}
 
 module.exports = ({content}:ctx) ->
   log "@render livescript"

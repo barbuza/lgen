@@ -21,10 +21,10 @@ npm install lgen --save-dev
 
 ```
 cat << EOF > Slakefile
-{read, markdown, jade-layout, stylus, autoprefixer, beautify, write, find} = require \lgen
+{read, markdown, jade, stylus, autoprefixer, beautify, write, find} = require \lgen
 <-! task \build
-find \*.md read >> markdown >> jade-layout(\default) >> beautify.html >> write \.html
-find \*.styl read >> stylus >> autoprefixer >> beautify.css >> write \.css
+find \*.md read >> markdown! >> jade(\default) >> beautify.html! >> write \.html
+find \*.styl read >> stylus >> autoprefixer! >> beautify.css! >> write \.css
 EOF
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "lgen",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "0config static site generator",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   "author": "Victor Kotseruba <barbuzaster@gmail.com>",
   "main": "./lib/lgen.js",
   "scripts": {
-    "prepublish": "lsc -o lib src/*.ls",
+    "prepublish": "./node_modules/.bin/livescript -bc -o lib src/*.ls && ./node_modules/.bin/js-beautify -s 2 -j -w 80 -r lib/*.js",
     "postpublish": "rm -rf lib"
   },
   "dependencies": {
@@ -23,6 +23,11 @@
     "js-beautify": "~1.4.0",
     "autoprefixer": "~0.6.20130731",
     "mkdirp": "~0.3.5",
-    "rmdir": "~1.0.0"
+    "rmdir": "~1.0.0",
+    "nib": "~0.9.2",
+    "execSync": "~1.0.1-pre",
+    "temp": "~0.5.1",
+    "uglify-js": "~2.3.6",
+    "cssmin": "~0.4.1"
   }
 }

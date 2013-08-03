@@ -1,8 +1,4 @@
-"use strict"
-
-fs = require \fs
-path = require \path
-log = require "./log"
+require! {fs, path, "./log"}
 
 module.exports = (file) ->
   file = file.file if file.file?

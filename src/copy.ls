@@ -1,9 +1,4 @@
-"use strict"
-
-fs = require \fs
-path = require \path
-mkdir = require \mkdirp .sync
-log = require "./log"
+require! {fs, path, mkdir: mkdirp.sync, "./log"}
 
 module.exports = (file) ->
   file = file.file if file.file?

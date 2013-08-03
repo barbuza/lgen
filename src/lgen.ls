@@ -1,8 +1,4 @@
-"use strict"
-
-fs = require \fs
-path = require \path
-glob = require \glob
+require! {fs, path, glob}
 
 lib =  __filename |> fs.realpathSync |> path.dirname
 ext = path.extname __filename

@@ -1,9 +1,6 @@
-"use strict"
-
-stylus = require \stylus
-log = require "./log"
+require! {stylus, nib, "./log"}
 
 module.exports = ({file, content}:ctx) ->
   log "@render stylus"
-  stylus.render content, filename: file, (_, css) -> ctx.content = css
+  ctx.content = stylus(content).set("filename", file).use(nib()).import("nib").render()
   ctx
