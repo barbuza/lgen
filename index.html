@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,500">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Code+Pro:300,500">
+  <link rel="stylesheet" href="style.css">
+  <title>lgen :: 0config static site generator for node.js</title>
+</head>
+
+<body>
+  <h1>lgen</h1>
+
+  <p>0config static site generator for node.js</p>
+
+  <h2>prepare</h2>
+
+  <h3>create a project</h3>
+
+  <table class="hlltable">
+    <tr>
+      <td class="linenos">
+        <div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre>
+        </div>
+      </td>
+      <td class="code">
+        <div class="hll"><pre>mkdir shiny-new-project <span class="o">&amp;&amp;</span> <span class="nb">cd </span>shiny-new-project
+cat <span class="s">&lt;&lt; EOF &gt; package.json</span>
+<span class="s">{</span>
+<span class="s">  &quot;name&quot;: &quot;shiny-new-project&quot;,</span>
+<span class="s">  &quot;version&quot;: &quot;0.1.0&quot;</span>
+<span class="s">}</span>
+<span class="s">EOF</span>
+npm install lgen --save-dev
+</pre>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <h3>create build script</h3>
+
+  <table class="hlltable">
+    <tr>
+      <td class="linenos">
+        <div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre>
+        </div>
+      </td>
+      <td class="code">
+        <div class="hll"><pre>cat <span class="s">&lt;&lt; EOF &gt; Slakefile</span>
+<span class="s">{read, markdown, jade, stylus, autoprefixer, beautify, write, find-files, cssmin} = require \lgen</span>
+<span class="s">&lt;-! task \build</span>
+<span class="s">find-files \*.md read &gt;&gt; markdown! &gt;&gt; jade(\default) &gt;&gt; beautify.html! &gt;&gt; write \.html</span>
+<span class="s">find-files \*.styl read &gt;&gt; stylus &gt;&gt; autoprefixer! &gt;&gt; cssmin &gt;&gt; write \.css</span>
+<span class="s">EOF</span>
+</pre>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <h3>create some source files</h3>
+
+  <table class="hlltable">
+    <tr>
+      <td class="linenos">
+        <div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre>
+        </div>
+      </td>
+      <td class="code">
+        <div class="hll"><pre>mkdir <span class="nb">source</span>
+cat <span class="s">&lt;&lt; EOF &gt; source/index.md</span>
+<span class="s"># hey</span>
+<span class="s">## i&#39;m rendered from markdown</span>
+<span class="s">EOF</span>
+cat <span class="s">&lt;&lt; EOF &gt; source/style.styl</span>
+<span class="s">body</span>
+<span class="s">  margin 0 auto</span>
+<span class="s">  width 960px</span>
+<span class="s">EOF</span>
+cat <span class="s">&lt;&lt; EOF &gt; source/default.jade</span>
+<span class="s">doctype 5</span>
+<span class="s">html(lang=&quot;en&quot;)</span>
+<span class="s">  head</span>
+<span class="s">    link(rel=&quot;stylesheet&quot;, href=&quot;style.css&quot;)</span>
+<span class="s">    title= title || basename</span>
+<span class="s">  body</span>
+<span class="s">    != content</span>
+<span class="s">EOF</span>
+</pre>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <h2>use</h2>
+
+  <table class="hlltable">
+    <tr>
+      <td class="linenos">
+        <div class="linenodiv"><pre>1</pre>
+        </div>
+      </td>
+      <td class="code">
+        <div class="hll"><pre>slake build
+</pre>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <h2>roll your own build scenario</h2>
+
+  <table class="hlltable">
+    <tr>
+      <td class="linenos">
+        <div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28</pre>
+        </div>
+      </td>
+      <td class="code">
+        <div class="hll"><pre><span class="p">{</span><span class="nx">map</span><span class="p">,</span> <span class="nx">flip</span><span class="p">,</span> <span class="nx">each</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">\prelude-ls</span>
+
+<span class="p">{</span>
+  <span class="nx">read</span><span class="p">,</span> <span class="nx">markdown</span><span class="p">,</span> <span class="nx">jade</span><span class="p">,</span> <span class="nx">copy</span><span class="p">,</span> <span class="nx">write</span><span class="p">,</span> <span class="nx">find-files</span><span class="p">,</span>
+  <span class="nx">beautify</span><span class="p">,</span> <span class="nx">stylus</span><span class="p">,</span> <span class="nx">autoprefixer</span><span class="p">,</span> <span class="nx">livescript</span><span class="p">,</span> <span class="nx">cssmin</span><span class="p">,</span>
+  <span class="nx">uglify-js</span><span class="p">,</span> <span class="nx">extend-ctx</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">\lgen</span>
+
+<span class="nv">write-html = </span><span class="nx">beautify</span><span class="p">.</span><span class="nx">html</span><span class="o">!</span> <span class="o">&gt;&gt;</span> <span class="nx">write</span> <span class="err">\</span><span class="p">.</span><span class="nx">html</span>
+
+<span class="nx">task</span> <span class="s">\posts</span> <span class="nf">-&gt;</span>
+  <span class="nv">posts = </span><span class="nx">find-files</span> <span class="s">&quot;????-??-??.md&quot;</span>
+  <span class="nv">names = </span><span class="nx">map</span> <span class="p">(.</span><span class="nx">basename</span><span class="p">),</span> <span class="nx">posts</span>
+  <span class="nv">set-post-attrs = </span><span class="nx">extend-ctx</span> <span class="nf">({basename}) -&gt;</span>
+    <span class="nv">idx = </span><span class="nx">names</span><span class="p">.</span><span class="nx">index-of</span> <span class="nx">basename</span>
+    <span class="nv">prev: </span><span class="k">if</span> <span class="nx">idx</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="nx">names</span><span class="p">[</span><span class="nx">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="kc">void</span>
+    <span class="nv">next: </span><span class="k">if</span> <span class="nx">idx</span> <span class="o">&lt;</span> <span class="nx">names</span><span class="p">.</span><span class="nx">length</span> <span class="k">then</span> <span class="nx">names</span><span class="p">[</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="kc">void</span>
+  <span class="nx">posts</span> <span class="o">`</span><span class="nx">flip</span><span class="p">(</span><span class="nx">each</span><span class="p">)</span><span class="o">`</span> <span class="p">(</span><span class="nx">read</span> <span class="o">&gt;&gt;</span> <span class="nx">set-post-attrs</span> <span class="o">&gt;&gt;</span> <span class="nx">markdown</span><span class="o">!</span> <span class="o">&gt;&gt;</span> <span class="nx">jade</span><span class="p">(</span><span class="s">\post</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="nx">write-html</span><span class="p">)</span>
+
+<span class="nx">task</span> <span class="s">\index</span> <span class="nf">-&gt;</span>
+  <span class="nx">find-files</span> <span class="s">\index</span><span class="p">.</span><span class="nx">md</span> <span class="nx">read</span> <span class="o">&gt;&gt;</span> <span class="nx">markdown</span><span class="p">({</span><span class="o">+</span><span class="nx">pygments</span><span class="p">})</span> <span class="o">&gt;&gt;</span> <span class="nx">jade</span><span class="p">(</span><span class="s">\default</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="nx">write-html</span>
+
+<span class="nx">task</span> <span class="s">\static</span> <span class="nf">-&gt;</span>
+  <span class="nx">find-files</span> <span class="err">\</span><span class="o">*</span><span class="p">.</span><span class="nx">styl</span> <span class="nx">read</span> <span class="o">&gt;&gt;</span> <span class="nx">stylus</span> <span class="o">&gt;&gt;</span> <span class="nx">autoprefixer</span><span class="o">!</span> <span class="o">&gt;&gt;</span> <span class="nx">cssmin</span> <span class="o">&gt;&gt;</span> <span class="nx">write</span> <span class="err">\</span><span class="p">.</span><span class="nx">css</span>
+  <span class="nx">find-files</span> <span class="err">\</span><span class="o">*</span><span class="p">.</span><span class="nx">ls</span> <span class="nx">read</span> <span class="o">&gt;&gt;</span> <span class="nx">livescript</span> <span class="o">&gt;&gt;</span> <span class="nx">uglify-js</span> <span class="o">&gt;&gt;</span> <span class="nx">write</span> <span class="err">\</span><span class="p">.</span><span class="nx">js</span>
+  <span class="nx">find-files</span> <span class="err">\</span><span class="o">*</span><span class="p">.</span><span class="nx">png</span> <span class="nx">copy</span>
+
+<span class="nx">task</span> <span class="s">\build</span> <span class="nf">-&gt;</span> <span class="nx">each</span> <span class="nx">invoke</span><span class="p">,</span> <span class="s">&lt;[static index posts]&gt;</span>
+</pre>
+        </div>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
